@@ -8,9 +8,7 @@ import numpy as np
 
 class Stage(Enum):
     TRAIN = auto()
-    TEST = auto()
-    VAL = auto()
-
+    VALIDATE = auto()
 
 class ExperimentTracker(Protocol):
     def set_stage(self, stage: Stage):

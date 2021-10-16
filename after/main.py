@@ -4,7 +4,7 @@ import torch
 
 from ds.dataset import create_dataloader
 from ds.models import LinearNet
-from ds.runner import Runner, run_epoch
+from ds.epoch import run_epoch
 from ds.tensorboard import TensorboardExperiment
 
 # Hyperparameters
@@ -31,33 +31,31 @@ def main():
     test_loader = create_dataloader(BATCH_SIZE, TEST_DATA, TEST_LABELS)
     train_loader = create_dataloader(BATCH_SIZE, TRAIN_DATA, TRAIN_LABELS)
 
-    # Create the runners
-    test_runner = Runner(test_loader, model)
-    train_runner = Runner(train_loader, model, optimizer)
-
     # Setup the experiment tracker
-    tracker = TensorboardExperiment(log_path=LOG_PATH)
+    experiment_tracker = TensorboardExperiment(log_path=LOG_PATH)
 
     # Run the epochs
     for epoch_id in range(EPOCH_COUNT):
-        run_epoch(test_runner, train_runner, tracker, epoch_id)
+        train_avg_accuracy, test_avg_accuracy = run_epoch(
+            epoch_id,
+            test_loader,
+            train_loader,
+            model,
+            optimizer,
+            experiment_tracker)
 
         # Compute Average Epoch Metrics
         summary = ", ".join(
             [
                 f"[Epoch: {epoch_id + 1}/{EPOCH_COUNT}]",
-                f"Test Accuracy: {test_runner.avg_accuracy: 0.4f}",
-                f"Train Accuracy: {train_runner.avg_accuracy: 0.4f}",
+                f"Test Accuracy: {test_avg_accuracy: 0.4f}",
+                f"Train Accuracy: {train_avg_accuracy: 0.4f}",
             ]
         )
         print("\n" + summary + "\n")
 
-        # Reset the runners
-        train_runner.reset()
-        test_runner.reset()
-
-        # Flush the tracker after every epoch for live updates
-        tracker.flush()
+        # Flush the experiment tracker after every epoch for live updates
+        experiment_tracker.flush()
 
 
 if __name__ == "__main__":
