@@ -4,6 +4,6 @@ This repository contains Adrian Bool's take on Arjan's refactoring of this Data 
 
 Here are the links to Arjan's videos:
 
-Part 1: https://youtu.be/ka70COItN40
-Part 2: https://youtu.be/Tx4AxbQNv3U
-Part 3: (coming soon)
+* **Part 1** - https://youtu.be/ka70COItN40
+* **Part 2** - https://youtu.be/Tx4AxbQNv3U
+* **Part 3** - (coming soon)
