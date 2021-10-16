@@ -3,3 +3,5 @@ before/runs/**
 **/*.pyc
 **/.DS_Store
 env
+.vscode
+.mypy_cache
